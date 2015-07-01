@@ -28,6 +28,12 @@ Question - is this the wrong way to go about this?
 - why do it with something else?
 - use questioning authority?
 
+###Problems and TODOs with current approach:
+- odd characters are catching in mongo
+- if encoded one way, and checked another, you get duplicate entries
+- would want to maybe create an option for "check again on another term"
+-
+
 OPEN REFINE RESULTS - Raw
 - 55 matched
 - 661 not matched
@@ -41,6 +47,7 @@ OPEN REFINE RESULTS - Preprocessed
 OPEN REFINE RESULTS - dbpedia (not using Zemanta, which appears to have closed it's api)
 - 79 matched
 - 637 not matched
+
 
 
 LOGS

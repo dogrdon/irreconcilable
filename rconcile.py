@@ -3,6 +3,7 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 import urllib
 import xml.etree.ElementTree as ET
 from pymongo import MongoClient
+import bson
 
 '''concept here is that you have a list of terms that you want to reconcile with dbpedia
    this uses https://github.com/dbpedia/lookup to generate top scored results
@@ -74,10 +75,9 @@ def main(db):
 	terms = openterms(_INFILE)
 	data = []
 	for t in terms:
-		t = t.encode('utf-8')
-		t_query = db.checkDB(t)
+		t_query = db.checkDB(bson.Binary(str(t)))
 		if t_query is None:
-			results = {'term':t, 'r_array':[]}
+			results = {'term':bson.Binary(str(t)), 'r_array':[]}
 			search_url = lookup_uri % t
 			res_xml = urllib.urlopen(search_url).read()
 			res_root = ET.fromstring(res_xml)
