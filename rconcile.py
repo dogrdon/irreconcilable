@@ -49,8 +49,13 @@ def checkresults(results):
 	print 'Select 99 if your answer is not there'
 
 	if results['r_array'] == []:
-		print "Sorry, There were not results"
-		record = {"NO_RESULTS":raw_input('No Results, suggest an alternative term: ')}
+		print "Sorry, There were no results"
+		#JUST CALL GET RESULTS HERE FOR ALTERNATIVE TERM? - ERROR, previous term is sent through if type unknown
+		second_chance = raw_input('No Results, suggest an alternative term or type UNKNOWN to move on: ')
+		if second_chance == "UNKNOWN":
+			record = {"NO_RESULTS":second_chance}
+		else:
+			record = getresults(second_chance, results) # THIS IS NOT THE BEST APPROACH, CHECK THE RESULTS BEFORE ADVANCING
 	else:
 		for r in results['r_array']:
 			print '%s: %s' % (results['r_array'].index(r), r['label'])
@@ -91,6 +96,7 @@ def main(db):
 	terms = openterms(_INFILE)
 	data = []
 	for t in terms:
+		t = t.replace(".", "")
 		t_query = db.checkDB(bson.Binary(str(t)))
 		if t_query is None:
 			results = {'term':bson.Binary(str(t)), 'r_array':[]}
