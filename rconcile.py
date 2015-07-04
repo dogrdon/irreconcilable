@@ -40,6 +40,9 @@ class DBClient(object):
 
 def checkresults(results):
 	'''show the results to user and have them select one'''
+
+	#TODO - MAKE IT SO WE CAN CYCLE THROUGH RESULTS AGAIN IF WE HAVE A REASONABLE ALTERNATIVE TERM SUGGESTION - might need to make checkresults recursive 
+
 	selection = 'Empty'
 
 	print 'Your term is %s - Choose which one you think is the most accurate from the list below: ' % results['term']
@@ -71,6 +74,19 @@ def openterms(f):
 	terms = [t.strip() for t in rawterms]
 	return terms
 
+def getresults(term, results):
+	search_url = lookup_uri % term
+	res_xml = urllib.urlopen(search_url).read()
+	res_root = ET.fromstring(res_xml)
+	res = res_root.findall(xmlns % 'Result')
+	for r in res:
+		label = r.find(xmlns % 'Label').text
+		desc = r.find(xmlns % 'Description').text
+		uri = r.find(xmlns % 'URI').text
+		results['r_array'].append({'label':label, 'description':desc, 'uri':uri})
+	ans = checkresults(results)
+	return ans
+
 def main(db):
 	terms = openterms(_INFILE)
 	data = []
@@ -78,17 +94,7 @@ def main(db):
 		t_query = db.checkDB(bson.Binary(str(t)))
 		if t_query is None:
 			results = {'term':bson.Binary(str(t)), 'r_array':[]}
-			search_url = lookup_uri % t
-			res_xml = urllib.urlopen(search_url).read()
-			res_root = ET.fromstring(res_xml)
-			res = res_root.findall(xmlns % 'Result')
-			for r in res:
-				label = r.find(xmlns % 'Label').text
-				desc = r.find(xmlns % 'Description').text
-				uri = r.find(xmlns % 'URI').text
-				results['r_array'].append({'label':label, 'description':desc, 'uri':uri})
-			ans = checkresults(results)
-			record = {results['term']:ans}
+			record = {results['term']:getresults(t, results)}
 			data.append(record)
 			db.updateRecord(record)
 	return data
