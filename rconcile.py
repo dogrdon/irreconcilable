@@ -55,6 +55,7 @@ def checkresults(results):
 		if second_chance == "UNKNOWN":
 			record = {"NO_RESULTS":second_chance}
 		else:
+			results = {'term':bson.Binary(str(second_chance)), 'r_array':[]}
 			record = getresults(second_chance, results) # THIS IS NOT THE BEST APPROACH, CHECK THE RESULTS BEFORE ADVANCING
 	else:
 		for r in results['r_array']:
@@ -64,11 +65,14 @@ def checkresults(results):
 				selection = int(raw_input("Enter the number for you choice: ").strip())
 			except ValueError:
 				print "Not a number, please enter again"
-			else:
-				print "That's not a valid number for this selection"
 		if selection == 99:
 			print "Looks like no good results"
-			record = {"BAD_RESULTS":raw_input('No Good Results, suggest an alternative term or mark UNKNOWN: ')}
+			second_chance = raw_input('No Good Results, suggest an alternative term or mark UNKNOWN or NEEDS DISAMBIG: ')
+			if second_chance == "UNKNOWN" or second_chance == "NEEDS DISAMBIG":
+				record = {"NO_RESULTS":second_chance}
+			else:
+				results = {'term':bson.Binary(str(second_chance)), 'r_array':[]}
+				record = getresults(second_chance, results)
 		elif selection != 99:
 			record = results['r_array'][selection]
 			print "You selected %s, %s" % (selection, record['label'])
