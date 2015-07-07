@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os, sys
 from SPARQLWrapper import SPARQLWrapper, JSON
 import urllib
