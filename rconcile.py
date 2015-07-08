@@ -52,8 +52,8 @@ def checkresults(results):
 	if results['r_array'] == []:
 		print "Sorry, There were no results"
 		#JUST CALL GET RESULTS HERE FOR ALTERNATIVE TERM? - ERROR, previous term is sent through if type unknown
-		second_chance = raw_input('No Results, suggest an alternative term or type UNKNOWN to move on: ')
-		if second_chance == "UNKNOWN":
+		second_chance = raw_input('No Results, suggest an alternative term or type UNKNOWN or NEEDS DISAMBIG to move on: ')
+		if second_chance == "UNKNOWN" or second_chance == "NEEDS DISAMBIG":
 			record = {"NO_RESULTS":second_chance}
 		else:
 			results = {'term':bson.Binary(str(second_chance)), 'r_array':[]}
