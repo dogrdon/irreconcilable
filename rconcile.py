@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import os, sys
-from SPARQLWrapper import SPARQLWrapper, JSON
 import urllib
 import xml.etree.ElementTree as ET
 from pymongo import MongoClient
@@ -13,13 +12,8 @@ import bson
 
 _INFILE = sys.argv[1]
 
-#qString = "SELECT * WHERE {?s ?p ?o.}"
-#sparql = SPARQLWrapper("http://sparql.freeyourmetadata.org/")
-#sparql.addDefaultGraph("http://id.loc.gov/authorities/subjects") #LCSH
-#sparql.setQuery(qString)
 lookup_uri = 'http://lookup.dbpedia.org/api/search/PrefixSearch?QueryClass=&QueryString=%s'
 xmlns = '{http://lookup.dbpedia.org/}%s'
-
 
 class DBClient(object):
 	_client = None
@@ -41,8 +35,6 @@ class DBClient(object):
 
 def checkresults(results):
 	'''show the results to user and have them select one'''
-
-	#TODO - MAKE IT SO WE CAN CYCLE THROUGH RESULTS AGAIN IF WE HAVE A REASONABLE ALTERNATIVE TERM SUGGESTION - might need to make checkresults recursive 
 
 	selection = 'Empty'
 
