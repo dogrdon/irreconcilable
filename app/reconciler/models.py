@@ -8,4 +8,3 @@ class Uri(models.Model):
     term = models.ForeignKey(Term)
     uri = models.CharField(max_length=500)
     
-
