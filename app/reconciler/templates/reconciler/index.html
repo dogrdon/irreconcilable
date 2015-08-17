@@ -1,0 +1,9 @@
+{% if current_terms %}
+    <ul>
+    {% for term in current_terms %}
+        <li><a href="/reconciler/{{ term.id }}/">{{ term.term_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No terms added.</p>
+{% endif %}
