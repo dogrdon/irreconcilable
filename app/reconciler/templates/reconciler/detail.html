@@ -1,0 +1,6 @@
+<h1>{{ term.term_text }}</h1>
+<ul>
+{% for uri in term.uri_set.all %}
+    <li>{{ uri.uri }}</li>
+{% endfor %}
+</ul>

@@ -18,7 +18,7 @@ from django.contrib import admin
 
 urlpatterns = [
 
-	url(r'^reconciler/', include('reconciler.urls')), 
+	url(r'^reconciler/', include('reconciler.urls', namespace='reconciler')), 
     url(r'^admin/', include(admin.site.urls)),
 
 ]
