@@ -5,5 +5,6 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'(?P<term_id>[0-9]+)/$', views.term_info, name='term_info'),
-    url(r'(?P<term_id>[0-9]+)/reconcile/?', views.term_recon, name='term_recon')
+    url(r'^reconcile/$', views.term_recon, name='term_recon') #this doesn't look right
+
 ]

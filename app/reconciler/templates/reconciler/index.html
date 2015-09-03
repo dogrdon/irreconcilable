@@ -7,3 +7,9 @@
 {% else %}
     <p>No terms added.</p>
 {% endif %}
+
+<p> add a term </p>
+<form action="{% url 'reconciler:term_recon' %}" method="post">
+	{% csrf_token %}
+	{{form}}
+</form>
