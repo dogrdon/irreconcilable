@@ -1,7 +1,7 @@
 {% if current_terms %}
     <ul>
     {% for term in current_terms %}
-        <li><a href="{% url 'reconciler:term_info' term.id %}">{{ term.term_text }}</a></li>
+        <li><a href="{% url 'reconciler:term_info' term.id %}">{{ term }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
@@ -9,7 +9,8 @@
 {% endif %}
 
 <p> add a term </p>
-<form action="{% url 'reconciler:term_recon' %}" method="post">
+<form action="" method="post">
 	{% csrf_token %}
-	{{form}}
+	{{ form }}
+	<input type="submit" value='Update' class='btn' />
 </form>
