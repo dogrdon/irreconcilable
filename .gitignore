@@ -1,5 +1,16 @@
+#python ignores
 *.pyc
+*.pyo
+venv*
+dist
+*.egg
+*.egg-info
+_mailinglist
+.tox
+settings.py
+
+#repo dir ignores
 terms/
 rdf_samples/
 data/
-settings.py
+
