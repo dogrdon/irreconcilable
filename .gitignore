@@ -13,4 +13,4 @@ settings.py
 terms/
 rdf_samples/
 data/
-
+tmp/
