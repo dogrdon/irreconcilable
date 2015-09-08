@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+  <ul class="entries">
+  {% for term in terms %}
+    <li><h2>{{ term.term_text }}</h2>{{ term.term_text|safe }}
+  {% else %}
+    <li><em>Fond no terms</em>
+  {% endfor %}
+  </ul>
+{% endblock %}
