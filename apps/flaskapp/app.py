@@ -1,11 +1,10 @@
-from sqlite3 import dbapi2 as sqlite3
+import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 #app.config.from_object('settings')
-app.config.from_envvar('settings', silent=True)
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./tmp/check.db' #this should not be here in the long run
+app.config.from_envvar('FLASKAPP_SETTINGS', silent=True)
 db = SQLAlchemy(app)
 
 #MODELS
@@ -28,7 +27,7 @@ class Uri(db.Model):
 #HELPER FUNCTIONS
 def connect_db():
     rv = sqlite3.connect(app.config['DATABASE'])
-    rv.row_factory = sqlite3.row
+    rv.row_factory = sqlite3.Row
     return rv
 
 def get_db():
@@ -44,7 +43,7 @@ def index():
 @app.route('/terms')
 def terms():
     db = get_db()
-    cur = db.execute('select term_text from terms order by id desc')
+    cur = db.execute('select term_text from term order by id desc')
     terms = cur.fetchall()
     return render_template('terms.html', terms=terms)
 

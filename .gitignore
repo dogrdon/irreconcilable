@@ -8,6 +8,7 @@ dist
 _mailinglist
 .tox
 settings.py
+*_settings.py
 
 #repo dir ignores
 terms/
