@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+{% block content %}
+{{super()}}
+<form action="{{url_for('addTerm')}}" method="POST">
+{{ forms.render(form) }}
+<p><input type="Submit" value="Term"></p>
+</form>
+{% endblock content %}

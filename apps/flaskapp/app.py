@@ -1,6 +1,7 @@
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
+from forms import AddTermForm
 
 app = Flask(__name__)
 #app.config.from_object('settings')
@@ -47,10 +48,15 @@ def terms():
     terms = cur.fetchall()
     return render_template('terms.html', terms=terms)
 
+@app.route('/add_term', methods=('GET', 'POST'))
+def addTerm():
+    form = AddTermForm()
+    return render_template('new_term.html', form=form)
+
+
 @app.route('/term/<int:term_id>')
 def term_details(term_id):
     return 'Term %d' % term_id
-
 
 
 
