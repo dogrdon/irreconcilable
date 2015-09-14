@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from forms import AddTermForm
 
 app = Flask(__name__)
-#app.config.from_object('settings')
 app.config.from_envvar('FLASKAPP_SETTINGS', silent=True)
 db = SQLAlchemy(app)
 
@@ -16,8 +15,8 @@ class Term(db.Model):
     def __init__(self, term_text):
         self.term_text = term_text
 
-    #def __repr__(self):
-    #    return '<Term %r>' % self.term_text
+    def __repr__(self):
+        return '<Term %r>' % self.term_text
 
 class Uri(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -43,8 +42,8 @@ def index():
 
 @app.route('/terms')
 def terms():
-    db = get_db()
-    cur = db.execute('select term_text from term order by id desc')
+    gdb = get_db()
+    cur = gdb.execute('select term_text from term order by id desc')
     terms = cur.fetchall()
     return render_template('terms.html', terms=terms)
 
@@ -52,10 +51,12 @@ def terms():
 def addTerm():
     form = AddTermForm(csrf_enabled=True)
     if request.method == "POST":
-        newTerm = Term(form.term_text.data)
-        print db.session
-        db.session.add(newTerm)
+        #newTerm = Term(form.term_text.data)
+        #db.session.add(newTerm)
         #db.session.commit()
+        gdb = get_db()
+        gdb.execute("insert into term (term_text) values (?)", (form.term_text.data,))
+        gdb.commit()
         return redirect(url_for('terms'))
     else:
         return render_template('new_term.html', form=form)
