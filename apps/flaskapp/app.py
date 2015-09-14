@@ -16,8 +16,8 @@ class Term(db.Model):
     def __init__(self, term_text):
         self.term_text = term_text
 
-    def __repr__(self):
-        return '<Term %r>' % self.term_text
+    #def __repr__(self):
+    #    return '<Term %r>' % self.term_text
 
 class Uri(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -50,9 +50,15 @@ def terms():
 
 @app.route('/add_term', methods=('GET', 'POST'))
 def addTerm():
-    form = AddTermForm()
-    return render_template('new_term.html', form=form)
-
+    form = AddTermForm(csrf_enabled=True)
+    if request.method == "POST":
+        newTerm = Term(form.term_text.data)
+        print db.session
+        db.session.add(newTerm)
+        #db.session.commit()
+        return redirect(url_for('terms'))
+    else:
+        return render_template('new_term.html', form=form)
 
 @app.route('/term/<int:term_id>')
 def term_details(term_id):
@@ -61,4 +67,5 @@ def term_details(term_id):
 
 
 if __name__ == '__main__':
+    app.debug = True
     app.run(host='0.0.0.0')

@@ -4,4 +4,4 @@ from wtforms import fields
 from wtforms.validators import Email, InputRequired, ValidationError
 
 class AddTermForm(Form):
-	term = fields.StringField(InputRequired())
+	term_text = fields.StringField(InputRequired())

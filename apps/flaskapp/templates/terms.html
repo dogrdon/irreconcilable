@@ -4,7 +4,7 @@
   {% for term in terms %}
     <li><h2>{{ term.term_text }}</h2>{{ term.term_text|safe }}
   {% else %}
-    <li><em>Fond no terms</em>
+    <li><em>Found no terms</em>
   {% endfor %}
   </ul>
 {% endblock %}
