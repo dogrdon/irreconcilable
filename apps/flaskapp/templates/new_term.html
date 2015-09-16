@@ -3,7 +3,6 @@
 <form action="{{ url_for('addTerm') }}" method="POST">
 	{{ form.term_text }}
 	{{ form.csrf_token }}
-	<p><button type="submit" value="Add Term"></p>
+	<p><input type="submit" value="Add Term"></p>
 </form>
 {% endblock %}
-`

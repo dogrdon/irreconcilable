@@ -35,6 +35,9 @@ def get_db():
         g.sqlite_db = connect_db()
     return g.sqlite_db
 
+def format_path(term):
+    return term.lower().replace(" ", "_")
+
 #VIEWS
 @app.route('/')
 def index():
@@ -50,13 +53,17 @@ def terms():
 @app.route('/add_term', methods=('GET', 'POST'))
 def addTerm():
     form = AddTermForm(csrf_enabled=True)
+    uri_pre = "http://example.org/"
     if request.method == "POST":
-        #newTerm = Term(form.term_text.data)
-        #db.session.add(newTerm)
-        #db.session.commit()
-        gdb = get_db()
-        gdb.execute("insert into term (term_text) values (?)", (form.term_text.data,))
-        gdb.commit()
+        newTerm = Term(term_text=form.term_text.data)
+        termUri = uri_pre + format_path(form.term_text.data)
+        newUri = Uri(uri=termUri, term_id=[newTerm])
+        db.session.add(newTerm)
+        db.session.add(newUri)
+        db.session.commit()
+        #gdb = get_db()
+        #gdb.execute("insert into term (term_text) values (?)", (form.term_text.data,))
+        #gdb.commit()
         return redirect(url_for('terms'))
     else:
         return render_template('new_term.html', form=form)
