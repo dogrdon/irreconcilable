@@ -21,7 +21,7 @@ class Term(db.Model):
 class Uri(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     uri = db.Column(db.String(255))
-    term_id = db.Column(db.Integer, db.ForeignKey('term.id'))
+    term_id = db.Column(db.Integer, db.ForeignKey('term.term_text'))
     term = db.relationship('Term', backref=db.backref('terms', lazy='dynamic'))
 
 #HELPER FUNCTIONS
@@ -45,9 +45,7 @@ def index():
 
 @app.route('/terms')
 def terms():
-    gdb = get_db()
-    cur = gdb.execute('select term_text from term order by id desc')
-    terms = cur.fetchall()
+    terms = Term.query.all()
     return render_template('terms.html', terms=terms)
 
 @app.route('/add_term', methods=('GET', 'POST'))
@@ -57,13 +55,10 @@ def addTerm():
     if request.method == "POST":
         newTerm = Term(term_text=form.term_text.data)
         termUri = uri_pre + format_path(form.term_text.data)
-        newUri = Uri(uri=termUri, term_id=[newTerm])
+        #newUri = Uri(uri=termUri, term_id=newTerm)
         db.session.add(newTerm)
-        db.session.add(newUri)
+        #db.session.add(newUri)
         db.session.commit()
-        #gdb = get_db()
-        #gdb.execute("insert into term (term_text) values (?)", (form.term_text.data,))
-        #gdb.commit()
         return redirect(url_for('terms'))
     else:
         return render_template('new_term.html', form=form)
