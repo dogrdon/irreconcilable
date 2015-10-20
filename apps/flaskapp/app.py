@@ -21,7 +21,7 @@ class Term(db.Model):
 class Uri(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     uri = db.Column(db.String(255))
-    term_id = db.Column(db.Integer, db.ForeignKey('term.term_text'))
+    term_id = db.Column(db.Integer, db.ForeignKey('term.id'))
     term = db.relationship('Term', backref=db.backref('terms', lazy='dynamic'))
 
 #HELPER FUNCTIONS
@@ -38,6 +38,9 @@ def get_db():
 def format_path(term):
     return term.lower().replace(" ", "_")
 
+def grab_uri(term):
+    return format_path(term)
+
 #VIEWS
 @app.route('/')
 def index():
@@ -53,11 +56,13 @@ def addTerm():
     form = AddTermForm(csrf_enabled=True)
     uri_pre = "http://example.org/"
     if request.method == "POST":
-        newTerm = Term(term_text=form.term_text.data)
-        termUri = uri_pre + format_path(form.term_text.data)
-        #newUri = Uri(uri=termUri, term_id=newTerm)
+        termtxt = form.term_text.data
+        newTerm = Term(term_text=termtxt)
+        termUri = uri_pre + grab_uri(termtxt)
         db.session.add(newTerm)
-        #db.session.add(newUri)
+        db.session.flush()
+        newUri = Uri(uri=termUri, term_id=newTerm.id)
+        db.session.add(newUri)
         db.session.commit()
         return redirect(url_for('terms'))
     else:
