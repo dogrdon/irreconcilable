@@ -51,10 +51,15 @@ def terms():
     terms = Term.query.all()
     return render_template('terms.html', terms=terms)
 
+@app.route('/new', methods=('GET', 'POST'))
+def newTerm():
+    form = AddTermForm(csrf_enabled=True)
+    return render_template('new_term.html', form=form)
+
 @app.route('/add_term', methods=('GET', 'POST'))
 def addTerm():
-    form = AddTermForm(csrf_enabled=True)
-    uri_pre = "http://example.org/"
+    #uri_pre = "http://example.org/"
+    '''
     if request.method == "POST":
         termtxt = form.term_text.data
         newTerm = Term(term_text=termtxt)
@@ -67,6 +72,8 @@ def addTerm():
         return redirect(url_for('terms'))
     else:
         return render_template('new_term.html', form=form)
+    '''
+    return render_template('new_term.html', form=form)
 
 @app.route('/term/<int:term_id>')
 def term_details(term_id):
