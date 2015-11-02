@@ -59,11 +59,11 @@ def newTerm():
 @app.route('/add_term', methods=('GET', 'POST'))
 def addTerm():
     '''url for taking in the final disposition for list of results and posts to db'''
-    #uri_pre = "http://example.org/"
+
     if request.method == "POST":
-        termtxt = form.term_text.data
+        termtxt = request.json['term']
         newTerm = Term(term_text=termtxt)
-        termUri = uri_pre + grab_uri(termtxt)
+        termUri = request.json['uri']
         db.session.add(newTerm)
         db.session.flush()
         newUri = Uri(uri=termUri, term_id=newTerm.id)

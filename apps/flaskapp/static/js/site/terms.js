@@ -34,25 +34,32 @@ $(function(){
 				//if we have an error, then we'll just have to decide what to do.
 				alert("something went wrong, check console");
 				console.log(error);
+			}, 
+			complete: function(){
+					$(document).on('click', '#confirm', function(){
+					//user clicks here when they've selected the most fitting option
+					var choice = $('form input[type=radio]:checked').val();
+					alert('are you sure you want to send '+choice+' for '+term+'?');
+					var choice_data = {'term':term, 'uri':choice};
+					
+					$.ajax({
+						url: '/add_term',
+						type: 'POST',
+						data: JSON.stringify(choice_data, null, '\t'),
+						contentType: 'application/json;charset=UTF-8',
+						success: function(response){
+							console.log(response);
+						},
+						error: function(error){
+							console.log(error);
+						}
+					})
+				});
 			}
 
 		});
 	});
 	
-	$('#confirm').click(function(){
-		//user clicks here when they've selected the most fitting option
-		var choice = $('form input[type=radio]:checked').val();
-		alert('are you sure you want to send'+choice+'?');
-		
-		//prep the data for posting
 
-		$.ajax({
-			url: '/add_term',
-			type: 'POST',
-			data: "Noting",//the data that we are posting to the server
-			success: function(response){},
-			error: function(error){}
-		})
-	});
 
 });
