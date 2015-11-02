@@ -58,8 +58,8 @@ def newTerm():
 
 @app.route('/add_term', methods=('GET', 'POST'))
 def addTerm():
+    '''url for taking in the final disposition for list of results and posts to db'''
     #uri_pre = "http://example.org/"
-    '''
     if request.method == "POST":
         termtxt = form.term_text.data
         newTerm = Term(term_text=termtxt)
@@ -72,8 +72,6 @@ def addTerm():
         return redirect(url_for('terms'))
     else:
         return render_template('new_term.html', form=form)
-    '''
-    return render_template('new_term.html', form=form)
 
 @app.route('/term/<int:term_id>')
 def term_details(term_id):

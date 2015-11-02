@@ -3,9 +3,11 @@
 <form action="{{ url_for('newTerm') }}" method="POST">
 	{{ form.term_text }}
 	{{ form.csrf_token }}
-	<p><button type="button" value="">Add Term</button></p>
+	<p><button id="search" type="button">Add Term</button></p>
 </form>
-<div class="selector">
-	<ul class="results"/>
+<div id="selector">
+	<form id="results">
+
+	</form>
 </div>
 {% endblock %}

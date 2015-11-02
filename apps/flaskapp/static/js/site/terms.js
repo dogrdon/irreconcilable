@@ -1,9 +1,9 @@
 $(function(){
 
-	$('button').click(function(){
-
+	$('#search').click(function(){
+		$('#results').empty();
 		var term = $('#term_text').val().trim();
-		var search_url = "http://lookup.dbpedia.org/api/search/PrefixSearch?QueryClass=&QueryString=" + term
+		var search_url = "http://lookup.dbpedia.org/api/search/PrefixSearch?QueryClass=&MaxHits=50&QueryString=" + term
 
 		console.log("searching on" + search_url)
 		
@@ -22,9 +22,13 @@ $(function(){
 						var label = item['label'];
 						var uri = item['uri'];
 						var desc = item['description'];
-						$('.results').append('<li><p>'+label+' | ' +uri+ ': ' + desc+'</p></li>')
+						$('#results').append('<input type="radio" name="choice" value="' + uri  + '">"'
+												+ label + ': '
+												+ desc
+												+ '</input><br/>');
 					}
 				}
+				$('#results').prepend('<button id="confirm" type="button">Confirm Selection</button><br/>');
 			},
 			error: function(error){
 				//if we have an error, then we'll just have to decide what to do.
@@ -34,4 +38,21 @@ $(function(){
 
 		});
 	});
+	
+	$('#confirm').click(function(){
+		//user clicks here when they've selected the most fitting option
+		var choice = $('form input[type=radio]:checked').val();
+		alert('are you sure you want to send'+choice+'?');
+		
+		//prep the data for posting
+
+		$.ajax({
+			url: '/add_term',
+			type: 'POST',
+			data: "Noting",//the data that we are posting to the server
+			success: function(response){},
+			error: function(error){}
+		})
+	});
+
 });
