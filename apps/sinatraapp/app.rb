@@ -3,12 +3,6 @@ require 'mongo'
 require 'json/ext'
 
 class RecApp < Sinatra::Base
-    set :bind, '0.0.0.0'
-
-    configure do
-    	db = Mongo::Client.new(['localhost:27017'], :database => 'test')
-    	set :mongo_db, db[:test]
-    end
 
     helpers do
     	def object_by_id val
