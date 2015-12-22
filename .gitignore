@@ -15,6 +15,3 @@ terms/
 rdf_samples/
 data/
 tmp/
-
-#ruby ignores
-*_settings.rb

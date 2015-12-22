@@ -5,3 +5,4 @@ _STORE
 /pkg
 /doc/api
 /Gemfile.lock
+db/
