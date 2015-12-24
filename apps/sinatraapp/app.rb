@@ -3,6 +3,13 @@ require 'mongo'
 require 'json/ext'
 require_relative 'db/config'
 
+before '/me' do
+	content_type :txt
+end
+
+not_found do
+	"404 - nothing here, go 'way"
+end
 
 helpers do
 	def object_by_id val
@@ -23,10 +30,25 @@ helpers do
 			(document || {}).to_json
 		end
 	end
+
+	def latest_addition
+		puts "getting started"
+		l_id = settings.mongo_db.find().sort({_id:-1}).limit(1).to_a[0]['docid']
+		puts "THIS!! IS!! #{l_id}"
+		if l_id.nil?
+			0
+		else
+			l_id
+		end
+	end
 end
 
 get '/' do
     "Welcome #{request.user_agent}! The time is: #{Time.now}. Pizza, Pizza in #{settings.bind}!"
+end
+
+get '/me' do
+	request.env.map { |e| e.to_s + "\n" }
 end
 
 get '/things/?' do
@@ -43,8 +65,15 @@ post '/new/?' do
 	content_type :json
 	db = settings.mongo_db
 	params = JSON.parse(request.body.read)
+	latest_id = latest_addition
+	new_id = latest_id + 1
+	params['docid'] = new_id
 	result = db.insert_one params
 	db.find(:_id => result.inserted_id).to_a.first.to_json
+end
+
+post '/remove/:id' do
+	#delete record here
 end
 
 
