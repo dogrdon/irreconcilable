@@ -32,9 +32,7 @@ helpers do
 	end
 
 	def latest_addition
-		puts "getting started"
 		l_id = settings.mongo_db.find().sort({_id:-1}).limit(1).to_a[0]['docid']
-		puts "THIS!! IS!! #{l_id}"
 		if l_id.nil?
 			0
 		else
