@@ -7,6 +7,12 @@ before '/me' do
 	content_type :txt
 end
 
+['/things', '/thing/*', '/remove/*', '/new'].each do |path|
+	before path do
+		content_type :json
+	end
+end
+
 not_found do
 	"404 - nothing here, go 'way"
 end
@@ -50,17 +56,14 @@ get '/me' do
 end
 
 get '/things/?' do
-	content_type :json
 	settings.mongo_db.find.to_a.to_json
 end
 
 get '/thing/:id/?' do
-	content_type :json
 	document_by_id(params[:id])
 end	
 
 post '/new/?' do
-	content_type :json
 	db = settings.mongo_db
 	params = JSON.parse(request.body.read)
 	latest_id = latest_addition
@@ -70,8 +73,16 @@ post '/new/?' do
 	db.find(:_id => result.inserted_id).to_a.first.to_json
 end
 
-post '/remove/:id' do
-	#delete record here
+delete '/remove/:id' do
+	db = settings.mongo_db
+	id = id.to_i
+	doc = db.find(:docid => id)
+	if !doc.to_a.first.nil?
+		doc.find_one_and_delete
+		{:success => true}.to_json
+	else
+		{:success => false}.to_json
+	end
 end
 
 
